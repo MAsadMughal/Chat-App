@@ -1,11 +1,12 @@
 import { ChevronDownIcon, SearchIcon } from '@chakra-ui/icons';
-import { Avatar, Box, Button, Divider, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Input, Menu, MenuButton, MenuItem, MenuList, Skeleton, Stack, Text, Tooltip, useDisclosure, useToast } from '@chakra-ui/react';
+import { Avatar, Box, Button, Divider, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Input, Menu, MenuButton, MenuItem, MenuList, Skeleton, Spinner, Stack, Text, Tooltip, useDisclosure, useToast } from '@chakra-ui/react';
 import axios from 'axios';
 import React, { useContext, useState } from 'react';
 import UserContext from '../../context/User/UserContext';
 import ShowToast from '../../toast/toast';
 import ProfileModal from './ProfileModal';
 import SearchComponent from './SearchComponent';
+import ChatContext from '../../context/Chat/ChatContext';
 
 const SideBar = ({ logout }) => {
     const toast = useToast();
@@ -14,6 +15,7 @@ const SideBar = ({ logout }) => {
     const [loading, setLoading] = useState(false);
     const [loadingChat, setLoadingChat] = useState();
     const { user } = useContext(UserContext);
+    const { setChats, fetchAllChats } = useContext(ChatContext);
     const { isOpen, onOpen, onClose } = useDisclosure()
 
 
@@ -21,7 +23,6 @@ const SideBar = ({ logout }) => {
         try {
             setLoading(true)
             const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/allUsers?search=${search}`, { withCredentials: true })
-            console.log(data);
             setSearchResult(data);
             setLoading(false)
         } catch (error) {
@@ -29,6 +30,20 @@ const SideBar = ({ logout }) => {
             ShowToast(toast, 'Error', error?.response?.data?.message, 'error');
         }
     }
+
+    const accessChat = async (userId) => {
+        try {
+            setLoadingChat(true)
+            await axios.post(`${process.env.REACT_APP_API_URL}/api/v1/accessChat`, { userId }, { withCredentials: true })
+            await fetchAllChats();
+            setLoadingChat(false)
+            onClose();
+        } catch (error) {
+            setLoadingChat(false)
+            ShowToast(toast, 'Error', error?.response?.data?.message, 'error');
+        }
+    }
+
 
     return (
         <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} bg="white" w="100%" p="5px 10px 5px 10px" borderWidth={"1.5px"}>
@@ -48,7 +63,7 @@ const SideBar = ({ logout }) => {
                 </Menu>
                 <Menu>
                     <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-                        <Avatar size='sm' cursor={"pointer"} name={user?.loggedInUser?.name} src={user?.loggedInUser?.pic?.url} />
+                        <Avatar size='sm' cursor={"pointer"} name={user?.loggedInUser?.name} src={user?.loggedInUser?.pic?.public_id !== 'no public_id' && user?.loggedInUser?.pic?.url} />
 
                     </MenuButton>
                     <MenuList>
@@ -76,22 +91,24 @@ const SideBar = ({ logout }) => {
                             </Box>
                             {/* {searchResult} */}
                             <br />
-                            {loading ? <>
-                                <Stack>
-                                    <Skeleton borderRadius={'10px'} height={'60px'} />
-                                    <Skeleton borderRadius={'10px'} height={'60px'} />
-                                    <Skeleton borderRadius={'10px'} height={'60px'} />
-                                    <Skeleton borderRadius={'10px'} height={'60px'} />
-                                    <Skeleton borderRadius={'10px'} height={'60px'} />
-                                    <Skeleton borderRadius={'10px'} height={'60px'} />
-                                    <Skeleton borderRadius={'10px'} height={'60px'} />
-                                </Stack>
-                            </> :
-                                searchResult?.map((item) => {
-                                    return (
-                                        <SearchComponent item={item} />
-                                    )
-                                })}
+                            {loadingChat ? <Spinner /> : <>
+                                {loading ? <>
+                                    <Stack>
+                                        <Skeleton borderRadius={'10px'} height={'60px'} />
+                                        <Skeleton borderRadius={'10px'} height={'60px'} />
+                                        <Skeleton borderRadius={'10px'} height={'60px'} />
+                                        <Skeleton borderRadius={'10px'} height={'60px'} />
+                                        <Skeleton borderRadius={'10px'} height={'60px'} />
+                                        <Skeleton borderRadius={'10px'} height={'60px'} />
+                                        <Skeleton borderRadius={'10px'} height={'60px'} />
+                                    </Stack>
+                                </> :
+                                    searchResult?.map((item, key) => {
+                                        return (
+                                            <SearchComponent key={key} accessChat={accessChat} item={item} />
+                                        )
+                                    })}
+                            </>}
                         </DrawerBody>
 
                     </DrawerContent>

@@ -9,7 +9,6 @@ const ProfileModal = ({ user, children }) => {
         <>
             {children ? <span onClick={onOpen}>{children}</span> : <MenuItem>User Details</MenuItem>}
 
-
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent>

@@ -6,10 +6,13 @@ import { useNavigate } from 'react-router-dom';
 import SideBar from '../Components/ChatComponents/SideBar';
 import MyChats from '../Components/ChatComponents/MyChats';
 import ChatBox from '../Components/ChatComponents/ChatBox';
+import ChatContext from '../context/Chat/ChatContext';
 
 const ChatPage = () => {
     const { user, getUserDetails } = useContext(UserContext);
+    const {loading}=useContext(ChatContext)
     const Navigate = useNavigate()
+
     const logout = async () => {
         await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/logout`, { withCredentials: true })
         await getUserDetails();
