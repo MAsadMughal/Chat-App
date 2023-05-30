@@ -64,7 +64,6 @@ const SideBar = ({ logout }) => {
                 <Menu>
                     <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
                         <Avatar size='sm' cursor={"pointer"} name={user?.loggedInUser?.name} src={user?.loggedInUser?.pic?.public_id !== 'no public_id' && user?.loggedInUser?.pic?.url} />
-
                     </MenuButton>
                     <MenuList>
                         <ProfileModal user={user.loggedInUser}>
@@ -91,7 +90,9 @@ const SideBar = ({ logout }) => {
                             </Box>
                             {/* {searchResult} */}
                             <br />
-                            {loadingChat ? <Spinner /> : <>
+                            {loadingChat ? <div style={{ width: '100%', display: 'flex', flexDirection: 'column', height: '20vh', alignItems: 'center', justifyContent: 'center' }}>
+                                <Spinner />
+                            </div> : <>
                                 {loading ? <>
                                     <Stack>
                                         <Skeleton borderRadius={'10px'} height={'60px'} />

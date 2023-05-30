@@ -1,0 +1,62 @@
+#dateForChat {
+  align-self: center;
+  justify-self: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-top: 3%;
+  font-family: sans-serif;
+  margin-bottom: 3%;
+  background-color: #f0fff0;
+  border-radius: 10px;
+}
+
+#wave {
+  margin-left: 20px;
+  font-weight: bolder;
+  font-size: 50px;
+  color: #60f;
+}
+
+/* #wave { */
+/* padding: 10px;
+  border: 5px solid deepskyblue;
+  background-color: white;
+  width: max-content;
+  border-radius: 20px;
+  height: 50px; */
+/* } */
+.dot {
+  /* margin-bottom: 0px; */
+}
+.dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 5px;
+  background: turquoise;
+  animation: wave 1s linear infinite;
+  animation-delay: -0.9s;
+}
+#wave .dot.two {
+  animation-delay: -0.7s;
+}
+#wave .dot.three {
+  margin-right: 0px;
+}
+#wave .dot:nth-child(3) {
+  animation-delay: -0.6s;
+}
+
+@keyframes wave {
+  0%,
+  60%,
+  100% {
+    transform: initial;
+  }
+  30% {
+    transform: translateY(-25px);
+  }
+}

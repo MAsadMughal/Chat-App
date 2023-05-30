@@ -20,7 +20,7 @@ const ChatPage = () => {
         window.location.reload();
     }
 
-
+ 
     return (
         <div style={{ width: '100%' }}>
             {user?.success && <SideBar logout={logout} />}

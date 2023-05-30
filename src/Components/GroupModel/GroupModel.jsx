@@ -65,7 +65,9 @@ const GroupModel = ({ children }) => {
                     </ModalHeader>
                     <ModalCloseButton />
 
-                    {loading ? <Spinner /> : <ModalBody paddingBottom={'30px'} display={'flex'} flexDirection={"column"} justifyContent={'space-evenly'} alignItems={'center'}>
+                    {loading ? <div style={{ width: '100%', display: 'flex', flexDirection: 'column', height: '20vh', alignItems: 'center', justifyContent: 'center' }}>
+                        <Spinner />
+                    </div> : <ModalBody paddingBottom={'30px'} display={'flex'} flexDirection={"column"} justifyContent={'space-evenly'} alignItems={'center'}>
                         <FormControl>
                             <Input type='text' onChange={(e) => setChatName(e.target.value)} value={chatName} placeholder='Group Name' />
                         </FormControl>

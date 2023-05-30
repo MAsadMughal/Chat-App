@@ -1,14 +1,12 @@
 import { Box, Button, Skeleton, Stack, Text, useToast } from '@chakra-ui/react';
 import React, { useContext, useEffect } from 'react'
-import ShowToast from '../../toast/toast';
-import axios from 'axios';
 import ChatContext from '../../context/Chat/ChatContext';
 import { AddIcon } from '@chakra-ui/icons';
 import UserContext from '../../context/User/UserContext';
 import GroupModel from '../GroupModel/GroupModel';
 
 const MyChats = () => {
-  const { loading,  selectedChat, setSelectedChat, chats,  fetchAllChats } = useContext(ChatContext);
+  const { loading, selectedChat, setSelectedChat, chats, fetchAllChats } = useContext(ChatContext);
   const { user } = useContext(UserContext);
 
   useEffect(() => {
@@ -33,7 +31,7 @@ const MyChats = () => {
       </Stack> : <Box display={'flex'} flexDir={'column'} p={'3'} mt={'20px'} background={'#f8f8f8'} h='100%' w='100%' borderRadius={'lg'} overflowY={'scroll'} >
         {chats?.map((item, ind) => {
           return (<Box transition={'all 0.3s ease'} mt={'10px'} w={'100%'} onClick={() => setSelectedChat(item)} cursor={'pointer'}
-            bg={selectedChat?._id === item?._id ? '#38B2AC' : '#E8E8E8'}
+            bg={selectedChat?._id === item?._id ? '#25d366' : '#E8E8E8'}
             color={selectedChat?._id === item?._id ? 'white' : null}
             px='3' py='3' borderRadius={'lg'} key={item?._id}>
             <Text>
