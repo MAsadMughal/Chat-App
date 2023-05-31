@@ -23,7 +23,12 @@ const SingleChat = () => {
     const toast = useToast()
 
     useEffect(() => {
-        socket = io(ENDPOINT);
+        const socket = io(ENDPOINT, {
+            withCredentials: true,
+            extraHeaders: {
+                'Access-Control-Allow-Origin': 'https://chat-it-up.vercel.app',
+            },
+        });
         socket.emit('setup', user.loggedInUser);
         socket.on('connected', () => {
             setSocketConnected(true);
