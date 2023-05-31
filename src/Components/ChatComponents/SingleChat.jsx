@@ -13,12 +13,14 @@ var socket, selectedChatCompare;
 const SingleChat = () => {
     const [loading, setLoading] = useState(false);
     const [messages, setMessages] = useState([]);
+    const [notsame, setNotSame] = useState(false);
     const [socketConnected, setSocketConnected] = useState(false)
     const [typing, setTyping] = useState(false)
-    const { selectedChat } = useContext(ChatContext);
+    const { selectedChat, setSelectedChat } = useContext(ChatContext);
     const { user } = useContext(UserContext);
     const [newMessage, setNewMessage] = useState('');
     const scrollRef = useRef(null)
+    const toast = useToast()
 
     useEffect(() => {
         socket = io(ENDPOINT);
@@ -42,7 +44,6 @@ const SingleChat = () => {
         }
     }
 
-    console.log(messages);
 
 
     useEffect(() => {
@@ -53,26 +54,18 @@ const SingleChat = () => {
         fetchMessages();
         selectedChatCompare = selectedChat;
     }, [selectedChat])
+
+
     const typingHandler = (e) => {
         setNewMessage(e.target.value)
         if (!socketConnected) return;
 
         if (!typing) {
-            // setTyping(true);
             socket.emit('typing', selectedChat._id);
         }
-        // let lasttyped = new Date().getTime();
-        // var timerLength =  1000;
-        // setTimeout(() => {
-        //     var timenow = new Date().getTime();
-        //     var timeDiff = timenow - lasttyped;
-        //     if (timeDiff >= timerLength && typing) {
-        //         socket.emit('stop typing', selectedChat._id);
-        //         // setTyping(false);
-        //     }
-        // }, timerLength)
     }
-    const toast = useToast()
+
+
     const sendMessage = async (e) => {
         if (e.key === 'Enter' && newMessage) {
             try {
@@ -80,7 +73,6 @@ const SingleChat = () => {
                 const chatId = selectedChat._id;
                 const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/api/v1/sendMessage`, { chatId, content: newMessage }, { withCredentials: true });
                 socket.emit('new message', data);
-                console.log(messages, data);
                 setMessages([...messages, data]);
                 setNewMessage('');
             } catch (error) {
@@ -91,8 +83,30 @@ const SingleChat = () => {
 
     useEffect(() => {
         socket.on('message received', async (message) => {
-            if (!selectedChatCompare || selectedChatCompare._id !== message.chat._id) {
-
+            if (!selectedChatCompare || selectedChatCompare._id !== message?.chat?._id) {
+                message?.content && setNotSame(true);
+                // notsame && message?.content && ShowToast(toast, message?.chat?.isGroupChat ? message?.chat?.chatName : message?.sender?.name, message?.content, 'success')
+                toast.closeAll();
+                // notsame && message?.content && message?.chat?.isGroupChat ? toast({
+                //     title: message?.chat?.chatName,
+                //     description: `${message?.sender?.name}=> ${message?.content}`,
+                //     status: 'success',
+                //     duration: 2000,
+                //     position: 'top'
+                //     // isClosable: true,
+                // }) :
+                    // notsame && !(message?.chat?.isGroupChat) && message?.content && toast({
+                    notsame  && message?.content && toast({
+                        title: message?.sender?.name,
+                        description: message?.content,
+                        status: 'success',
+                        duration: 2000,
+                        position: 'top'
+                        // isClosable: true,
+                    })
+                setTimeout(() => {
+                    setNotSame(false)
+                }, 500);
             } else {
                 setMessages([...messages, message]);
             }
@@ -101,6 +115,7 @@ const SingleChat = () => {
 
     return (<>
         {selectedChat ? <Box w='100%' h='100%' overflowY={'scroll'}>
+
             {loading ?
                 <div style={{ width: '100%', display: 'flex', flexDirection: 'column', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
                     <Spinner speed='300ms' color='aqua' w='20' h='20' />
@@ -149,9 +164,9 @@ const SingleChat = () => {
                                 }
                                 {ind === messages.length - 1 && typing &&
                                     <div id="wave">
-                                        <span class="dot one"></span>
-                                        <span class="dot two"></span>
-                                        <span class="dot three"></span>
+                                        <span className="dot one"></span>
+                                        <span className="dot two"></span>
+                                        <span className="dot three"></span>
                                     </div >}
                                 <div ref={scrollRef}></div>
 
