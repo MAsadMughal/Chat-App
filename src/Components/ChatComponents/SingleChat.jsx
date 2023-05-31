@@ -16,20 +16,15 @@ const SingleChat = () => {
     const [notsame, setNotSame] = useState(false);
     const [socketConnected, setSocketConnected] = useState(false)
     const [typing, setTyping] = useState(false)
-    const { selectedChat, setSelectedChat } = useContext(ChatContext);
+    const { selectedChat } = useContext(ChatContext);
     const { user } = useContext(UserContext);
     const [newMessage, setNewMessage] = useState('');
     const scrollRef = useRef(null)
     const toast = useToast()
 
     useEffect(() => {
-        socket = io(ENDPOINT, {
-            withCredentials: true,
-            extraHeaders: {
-                'Access-Control-Allow-Origin': 'https://chat-it-up.vercel.app',
-            },
-        }); 
-        
+        socket = io(ENDPOINT);
+
         socket.emit('setup', user.loggedInUser);
         socket.on('connected', () => {
             setSocketConnected(true);
