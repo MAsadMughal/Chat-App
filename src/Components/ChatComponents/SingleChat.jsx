@@ -7,7 +7,7 @@ import UserContext from '../../context/User/UserContext';
 import DateForChat from './DateForChat'
 import io from 'socket.io-client';
 import ShowToast from '../../toast/toast';
-const ENDPOINT = 'http://localhost:5000';
+const ENDPOINT = 'https://us-central1-chat-up-1.cloudfunctions.net/api';
 var socket, selectedChatCompare;
 
 const SingleChat = () => {
@@ -95,15 +95,15 @@ const SingleChat = () => {
                 //     position: 'top'
                 //     // isClosable: true,
                 // }) :
-                    // notsame && !(message?.chat?.isGroupChat) && message?.content && toast({
-                    notsame  && message?.content && toast({
-                        title: message?.sender?.name,
-                        description: message?.content,
-                        status: 'success',
-                        duration: 2000,
-                        position: 'top'
-                        // isClosable: true,
-                    })
+                // notsame && !(message?.chat?.isGroupChat) && message?.content && toast({
+                notsame && message?.content && toast({
+                    title: message?.sender?.name,
+                    description: message?.content,
+                    status: 'success',
+                    duration: 2000,
+                    position: 'top'
+                    // isClosable: true,
+                })
                 setTimeout(() => {
                     setNotSame(false)
                 }, 500);
