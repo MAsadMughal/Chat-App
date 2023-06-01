@@ -1,0 +1,6 @@
+{
+    "env": {
+        "NODE_ENV": "production",
+        "COOKIE_SECRET": "CHAT-IT-UP"
+      }
+}
