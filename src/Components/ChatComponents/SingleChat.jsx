@@ -1,4 +1,4 @@
-import { Avatar, Box, FormControl, Input, Spinner, Text, Tooltip, useToast } from '@chakra-ui/react'
+import { Avatar, Box, FormControl,Textarea, Input, Spinner, Text, Tooltip, useToast } from '@chakra-ui/react'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import ChatContext from '../../context/Chat/ChatContext';
 import axios from 'axios';
@@ -7,7 +7,7 @@ import UserContext from '../../context/User/UserContext';
 import DateForChat from './DateForChat'
 import io from 'socket.io-client';
 import ShowToast from '../../toast/toast';
-const ENDPOINT = 'https://us-central1-chat-up-1.cloudfunctions.net/api';
+const ENDPOINT = 'http://localhost:1215';
 var socket, selectedChatCompare;
 
 const SingleChat = () => {
@@ -183,7 +183,7 @@ const SingleChat = () => {
             </Box>
         }
         {!loading && selectedChat && <FormControl position={'sticky'} px={'10px'} pb='10px' >
-            <Input placeholder='Type Your Message' value={newMessage} variant={'filled'} onChange={typingHandler} onKeyDown={sendMessage} />
+            <Textarea placeholder='Type Your Message' value={newMessage} variant={'filled'} onChange={typingHandler} onKeyDown={sendMessage} />
         </FormControl>
         }
     </>

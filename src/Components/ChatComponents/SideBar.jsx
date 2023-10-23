@@ -43,8 +43,7 @@ const SideBar = ({ logout }) => {
             ShowToast(toast, 'Error', error?.response?.data?.message, 'error');
         }
     }
-
-
+    
     return (
         <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} bg="white" w="100%" p="5px 10px 5px 10px" borderWidth={"1.5px"}>
             <Tooltip label="Search users to have a chat." hasArrow placement='bottom-end'>
