@@ -183,7 +183,7 @@ const SingleChat = () => {
             </Box>
         }
         {!loading && selectedChat && <FormControl position={'sticky'} px={'10px'} pb='10px' >
-            <Textarea placeholder='Type Your Message' value={newMessage} variant={'filled'} onChange={typingHandler} onKeyDown={sendMessage} />
+            <Input placeholder='Type Your Message' value={newMessage} variant={'filled'} onChange={typingHandler} onKeyDown={sendMessage} />
         </FormControl>
         }
     </>
